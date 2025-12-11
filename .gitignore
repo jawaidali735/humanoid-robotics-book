@@ -112,4 +112,4 @@ secrets/
 *.pem
 *.crt
 *.cert
-config.json
+config.jsonnul
