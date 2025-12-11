@@ -3,8 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - 001-book-humanoid-robotics  # Your development branch
-      - main  # Also trigger on main if needed
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
