@@ -3,7 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - 001-book-humanoid-robotics  # Changed to your branch name
+      - 001-book-humanoid-robotics  # Your development branch
+      - main  # Also trigger on main if needed
   workflow_dispatch:
 
 permissions:
