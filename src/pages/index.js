@@ -24,7 +24,7 @@ function HomepageHeader() {
             </Link>
             <Link
               className={styles['button--secondary']}
-              to="/docs/module-1-ros2/module-1-ros2-index">
+              to="/docs/module-1-ros2/">
               🚀 Start Learning
             </Link>
           </div>

@@ -81,7 +81,6 @@ const config = {
             position: 'left',
             label: 'Book',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/jawaidali735/humanoid-robotics-book',
             label: 'GitHub',
@@ -97,15 +96,15 @@ const config = {
             items: [
               {
                 label: 'ROS 2 Fundamentals',
-                to: '/docs/module-1-ros2',
+                to: '/docs/module-1-ros2/module-1-ros2-index',
               },
               {
                 label: 'Simulation Environments',
-                to: '/docs/module-2-simulation',
+                to: '/docs/module-2-simulation/module-2-simulation-index',
               },
               {
                 label: 'AI Integration',
-                to: '/docs/module-3-ai-integration',
+                to: '/docs/module-3-ai-integration/module-3-ai-integration-index',
               },
             ],
           },
@@ -129,10 +128,6 @@ const config = {
           {
             title: 'More',
             items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/jawaidali735/humanoid-robotics-book',

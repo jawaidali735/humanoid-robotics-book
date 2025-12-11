@@ -34,9 +34,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      # 👇 Specify your project's build output path
-      - name: Build
-        run: npm run build
       # 👆 Build steps
       - name: Setup Pages
         uses: actions/configure-pages@v4
