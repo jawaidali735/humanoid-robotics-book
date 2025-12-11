@@ -10,7 +10,10 @@
       "Bash(npx docusaurus start --port 3003)",
       "Bash(npx docusaurus start --port 3004)",
       "Bash(npx docusaurus start --port 3005)",
-      "Bash(npx docusaurus start --port 3006)"
+      "Bash(npx docusaurus start --port 3006)",
+      "Bash(git add .github/workflows/github-pages.yml)",
+      "Bash(git commit -m \"chore: update workflow to trigger on main/master branches\n\n- Update GitHub Actions workflow to deploy from main/master branches\n- Ensure GitHub Pages deployment works from primary branch\n\nCo-authored-by: Claude Sonnet 4.5 <noreply@anthropic.com>\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\")",
+      "Bash(git push origin 001-book-humanoid-robotics)"
     ]
   }
 }
