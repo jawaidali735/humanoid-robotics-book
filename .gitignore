@@ -1,0 +1,115 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.so
+.venv/
+venv/
+env/
+ENV/
+
+# Docusaurus
+.cache/
+.docusaurus/
+.checkpoint/
+
+# Node.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+dist/
+build/
+coverage/
+.nyc_output
+*.log
+.env*
+.env*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+.env
+.env.local
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.coverage/
+.nox/
+.hypothesis/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+/.history/
+
+# Local configuration
+.Docusaurus/
+.docusaurus/
+
+# ROS2 related
+*.log
+.log
+build_isolated/
+install_isolated/
+build/
+install/
+log/
+
+# Build outputs
+out/
+.output/
+public/
+
+# Environment specific
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+.nyc_output/
+.jest/
+jest/
+mocha.opts
+test-results/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.crt
+*.cert
+config.json

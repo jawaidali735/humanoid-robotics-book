@@ -20,17 +20,25 @@
   ============================================================================
 -->
 
-## [Category 1]
+## Content Quality
 
-- [ ] CHK001 First checklist item with clear action
-- [ ] CHK002 Second checklist item
-- [ ] CHK003 Third checklist item
+- [ ] CHK001 Content demonstrates educational clarity from beginner to advanced levels
+- [ ] CHK002 Technical accuracy verified against ROS2, URDF, and real control systems
+- [ ] CHK003 All code examples tested and verified to run successfully
+- [ ] CHK004 Content includes proper citations to official documentation or reputable research
 
-## [Category 2]
+## Educational Structure
 
-- [ ] CHK004 Another category item
-- [ ] CHK005 Item with specific criteria
-- [ ] CHK006 Final item in this category
+- [ ] CHK005 Each chapter starts from a specification with clear objectives
+- [ ] CHK006 Content includes examples, steps, and final exercises for each major topic
+- [ ] CHK007 Every technical module specifies inputs, outputs, architecture, and safety notes
+- [ ] CHK008 Content follows mentor-to-student communication style
+
+## Ethical and Safety Considerations
+
+- [ ] CHK009 All AI and robotics content includes safety considerations
+- [ ] CHK010 Ethical implications of humanoid robotics addressed appropriately
+- [ ] CHK011 All technical modules include safety notes for physical systems
 
 ## Notes
 

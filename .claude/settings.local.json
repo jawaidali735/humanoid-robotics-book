@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"history\\prompts\" /s)",
+      "Bash(mkdir -p docs src static)",
+      "Bash(npm install)",
+      "Bash(npx kill-port 3000)",
+      "Bash(npm start)",
+      "Bash(npx docusaurus start --port 3002)",
+      "Bash(npx docusaurus start --port 3003)",
+      "Bash(npx docusaurus start --port 3004)",
+      "Bash(npx docusaurus start --port 3005)",
+      "Bash(npx docusaurus start --port 3006)"
+    ]
+  }
+}

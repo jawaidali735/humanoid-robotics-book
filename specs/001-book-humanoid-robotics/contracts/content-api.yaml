@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  title: Educational Content API
+  description: API for managing educational content for the Physical AI and Humanoid Robotics book
+  version: 1.0.0
+servers:
+  - url: https://api.physical-ai-book.com/v1
+    description: Production server
+  - url: https://staging-api.physical-ai-book.com/v1
+    description: Staging server
+
+paths:
+  /chapters:
+    get:
+      summary: List all chapters
+      description: Retrieve a list of all book chapters with pagination
+      parameters:
+        - name: module
+          in: query
+          description: Filter chapters by module
+          required: false
+          schema:
+            type: string
+            enum: [ROS2, Simulation, AI-Integration, VLA]
+        - name: difficulty
+          in: query
+          description: Filter chapters by difficulty level
+          required: false
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+        - name: limit
+          in: query
+          description: Number of results to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: offset
+          in: query
+          description: Number of results to skip
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: A list of chapters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chapters:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chapter'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Create a new chapter
+      description: Create a new chapter in the educational content system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChapterInput'
+      responses:
+        '201':
+          description: Chapter created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chapter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chapters/{chapterId}:
+    get:
+      summary: Get a specific chapter
+      description: Retrieve detailed information about a specific chapter
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          description: Unique identifier of the chapter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chapter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chapter'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      summary: Update a chapter
+      description: Update information about a specific chapter
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          description: Unique identifier of the chapter
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChapterInput'
+      responses:
+        '200':
+          description: Chapter updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chapter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete a chapter
+      description: Remove a chapter from the system
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          description: Unique identifier of the chapter
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Chapter deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /modules:
+    get:
+      summary: List all modules
+      description: Retrieve a list of all educational modules
+      responses:
+        '200':
+          description: A list of modules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Module'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /exercises:
+    get:
+      summary: List all exercises
+      description: Retrieve a list of all hands-on exercises
+      parameters:
+        - name: chapterId
+          in: query
+          description: Filter exercises by chapter
+          required: false
+          schema:
+            type: string
+        - name: difficulty
+          in: query
+          description: Filter exercises by difficulty level
+          required: false
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+      responses:
+        '200':
+          description: A list of exercises
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exercises:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Exercise'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /code-examples:
+    get:
+      summary: List all code examples
+      description: Retrieve a list of all code examples
+      parameters:
+        - name: chapterId
+          in: query
+          description: Filter code examples by chapter
+          required: false
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: Filter code examples by programming language
+          required: false
+          schema:
+            type: string
+            enum: [Python, C++, Bash, XML, URDF]
+      responses:
+        '200':
+          description: A list of code examples
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code_examples:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CodeExample'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    Chapter:
+      type: object
+      required:
+        - id
+        - title
+        - module
+        - content_sections
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chapter
+        title:
+          type: string
+          description: Title of the chapter
+        module:
+          type: string
+          enum: [ROS2, Simulation, AI-Integration, VLA]
+          description: Module this chapter belongs to
+        learning_outcomes:
+          type: array
+          items:
+            type: string
+          description: List of learning outcomes for this chapter
+        content_sections:
+          type: array
+          items:
+            type: object
+            properties:
+              section_type:
+                type: string
+                enum: [introduction, concepts, toolchain, implementation, case-studies, exercises, debugging, summary]
+              title:
+                type: string
+              content:
+                type: string
+          description: Ordered list of content sections
+        code_examples:
+          type: array
+          items:
+            type: string
+          description: References to code examples in this chapter
+        exercises:
+          type: array
+          items:
+            type: string
+          description: References to exercises in this chapter
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Prerequisites for this chapter
+        created_date:
+          type: string
+          format: date-time
+          description: Chapter creation timestamp
+        last_updated:
+          type: string
+          format: date-time
+          description: Last modification timestamp
+
+    ChapterInput:
+      type: object
+      required:
+        - title
+        - module
+        - content_sections
+      properties:
+        title:
+          type: string
+          description: Title of the chapter
+        module:
+          type: string
+          enum: [ROS2, Simulation, AI-Integration, VLA]
+          description: Module this chapter belongs to
+        learning_outcomes:
+          type: array
+          items:
+            type: string
+          description: List of learning outcomes for this chapter
+        content_sections:
+          type: array
+          items:
+            type: object
+            properties:
+              section_type:
+                type: string
+                enum: [introduction, concepts, toolchain, implementation, case-studies, exercises, debugging, summary]
+              title:
+                type: string
+              content:
+                type: string
+          description: Ordered list of content sections
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Prerequisites for this chapter
+
+    Module:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the module
+        name:
+          type: string
+          enum: [ROS2, Simulation, AI-Integration, VLA]
+          description: Name of the module
+        description:
+          type: string
+          description: Brief description of the module
+        chapters:
+          type: array
+          items:
+            type: string
+          description: List of chapter IDs in this module
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Prerequisites for this module
+        learning_path:
+          type: array
+          items:
+            type: string
+          description: Sequential learning path of chapter IDs
+
+    Exercise:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - difficulty
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the exercise
+        title:
+          type: string
+          description: Title of the exercise
+        description:
+          type: string
+          description: Detailed exercise description
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+          description: Difficulty level of the exercise
+        estimated_time:
+          type: integer
+          description: Estimated completion time in minutes
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Prerequisites for completing the exercise
+        steps:
+          type: array
+          items:
+            type: string
+          description: Sequential steps to complete the exercise
+        expected_outcomes:
+          type: array
+          items:
+            type: string
+          description: Expected results after completion
+        validation_criteria:
+          type: array
+          items:
+            type: string
+          description: Criteria to verify completion
+        associated_chapter:
+          type: string
+          description: Chapter this exercise belongs to
+
+    CodeExample:
+      type: object
+      required:
+        - id
+        - title
+        - code_snippet
+        - language
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the code example
+        title:
+          type: string
+          description: Title of the code example
+        description:
+          type: string
+          description: Brief description of what the code does
+        language:
+          type: string
+          enum: [Python, C++, Bash, XML, URDF]
+          description: Programming language of the code
+        code_snippet:
+          type: string
+          description: The actual code content
+        setup_instructions:
+          type: string
+          description: Instructions to set up the environment
+        execution_steps:
+          type: array
+          items:
+            type: string
+          description: Steps to execute the code
+        expected_output:
+          type: string
+          description: Expected output or behavior
+        associated_chapter:
+          type: string
+          description: Chapter this example belongs to
+        dependencies:
+          type: array
+          items:
+            type: string
+          description: Required packages or libraries
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Application-specific error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

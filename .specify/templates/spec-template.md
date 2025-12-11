@@ -84,16 +84,16 @@
 
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-001**: Content MUST [specific capability, e.g., "be structured from beginner to advanced levels"]
+- **FR-002**: Content MUST [specific capability, e.g., "include practical examples and hands-on exercises"]
+- **FR-003**: Users MUST be able to [key interaction, e.g., "follow step-by-step procedures successfully"]
+- **FR-004**: Content MUST [educational requirement, e.g., "include proper citations to official documentation"]
+- **FR-005**: Content MUST [behavior, e.g., "include safety considerations for physical systems"]
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-006**: Content MUST align with [NEEDS CLARIFICATION: specific robotics framework - ROS2, URDF, or others?]
+- **FR-007**: Content MUST meet [NEEDS CLARIFICATION: word count requirement - 20k, 35k, or other?]
 
 ### Key Entities *(include if feature involves data)*
 
@@ -109,7 +109,8 @@
 
 ### Measurable Outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-001**: [Measurable metric, e.g., "Content covers beginner to advanced levels with clear progression"]
+- **SC-002**: [Measurable metric, e.g., "All code examples run successfully in specified environments"]
+- **SC-003**: [Educational metric, e.g., "90% of readers can complete hands-on exercises successfully"]
+- **SC-004**: [Content metric, e.g., "Book meets 20k-35k word count requirement"]
+- **SC-005**: [Technical accuracy, e.g., "All robotics concepts align with ROS2, URDF, and real control systems"]

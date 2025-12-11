@@ -1,55 +1,50 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+Version change: 1.0.0 → 1.0.0 (initial constitution for project)
+Added sections: Core Principles (6), Standards and Structure, Development Workflow, Governance
+Removed sections: None
+Templates requiring updates:
+✅ .specify/templates/spec-template.md - Updated functional requirements and success criteria to align with educational focus
+✅ .specify/templates/plan-template.md - Updated technical context to include documentation/educational project types
+✅ .specify/templates/tasks-template.md - Updated path conventions to include documentation projects
+✅ .specify/templates/checklist-template.md - Updated checklist items to focus on educational content quality
+✅ .specify/templates/agent-file-template.md - Updated to focus on educational content guidelines
+Follow-up TODOs: None
+-->
+
+# AI/Spec-Driven Book on Physical AI & Humanoid Robotics Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Educational Clarity (Beginner to Advanced)
+Content must be structured to guide learners from beginner to advanced levels with clear progression paths. All concepts must be explained with practical examples and hands-on exercises. Each chapter should build upon previous knowledge while introducing new concepts systematically.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Technical Accuracy
+All technical content must reflect current industry standards and best practices. Robotics concepts must align with ROS2, URDF, and real control systems. Agentic AI content must reflect current production practices. Code examples must be verified to run successfully in the specified environments.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### Practical Outcomes
+Every technical module must include hands-on examples that readers can execute. At least one working demo must be provided (simulation acceptable). Content should emphasize practical applications and real-world implementations over theoretical concepts alone.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Ethical Responsibility
+All AI and robotics content must include safety considerations and responsible AI practices. Content creators must address potential ethical implications of humanoid robotics and AI systems. Safety notes must accompany all technical modules involving physical systems.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Original and Traceable Content
+All content must be original with proper citations to official documentation or reputable research sources. Code examples must be source-traceable and verifiable. Plagiarism is strictly prohibited and all external sources must be properly attributed.
 
-### [PRINCIPLE_6_NAME]
+### Mentor-to-Student Tone
+The communication style must be respectful, direct, and supportive. Content should adopt a mentoring approach that guides students through complex topics. Language should be accessible without being condescending, with clear explanations of complex concepts.
 
+## Standards and Structure
+Content must adhere to strict quality standards to ensure educational effectiveness. Each chapter must start from a specification that defines clear objectives, prerequisites, and expected outcomes. The book must include examples, step-by-step procedures, and final exercises for each major topic. Every technical module must specify inputs, outputs, architecture, implementation details, failure modes, and safety notes.
 
-[PRINCIPLE__DESCRIPTION]
+Minimum total length requirement: 20,000-35,000 words. All images and figures must include proper attribution and be appropriately licensed for educational use.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Development Workflow
+Each chapter follows a specification-driven development approach where requirements are clearly defined before content creation begins. The Docusaurus platform is used for documentation with GitHub Pages for deployment. Spec-Kit Plus and Claude Code serve as primary development tools to ensure consistency and quality. All content undergoes peer review and technical validation before publication.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This constitution serves as the governing document for all project activities. All contributors must adhere to the principles outlined herein. Any amendments to this constitution require explicit approval and must be documented with clear rationale. Compliance with these principles is mandatory for all project participants.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Content creation follows the specification → plan → tasks workflow as defined by Spec-Kit Plus. All changes must maintain consistency with established educational goals and technical standards.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-10
