@@ -1,8 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "start": "cd frontend && npm run start",
+    "build": "cd frontend && npx docusaurus build",
+    "start": "cd frontend && npx docusaurus start",
     "docusaurus": "cd frontend && npx docusaurus"
   },
   "dependencies": {
