@@ -1,0 +1,67 @@
+# Function Interface Contracts: Text Extraction & Embedding Pipeline
+
+**Feature**: 001-text-extraction-embedding
+**Created**: 2025-12-16
+**Type**: Function Interface Specification (Single-File Implementation)
+
+## Function Signatures
+
+### get_all_urls()
+**Purpose**: Retrieve all Docusaurus book URLs from the provided site
+**Signature**: `get_all_urls(base_url="https://jawaidali735.github.io/humanoid-robotics-book/") -> List[str]`
+**Parameters**:
+- `base_url` (string): The base URL of the Docusaurus site to crawl
+**Returns**: List of URLs found on the site
+**Exceptions**: May raise requests.RequestException for network issues
+
+### extract_text_from_urls()
+**Purpose**: Extract clean text from the provided URLs while preserving semantic structure
+**Signature**: `extract_text_from_urls(urls: List[str]) -> List[dict]`
+**Parameters**:
+- `urls` (List[str]): List of URLs to extract text from
+**Returns**: List of dictionaries containing 'url', 'content', and 'title' keys
+**Exceptions**: May raise requests.RequestException for network issues
+
+### chunk_text()
+**Purpose**: Chunk text into appropriately sized segments
+**Signature**: `chunk_text(text: str, chunk_size=300, overlap=50) -> List[dict]`
+**Parameters**:
+- `text` (str): Text to be chunked
+- `chunk_size` (int): Target number of words per chunk (default 300)
+- `overlap` (int): Number of words to overlap between chunks (default 50)
+**Returns**: List of chunk dictionaries with 'content', 'start_idx', 'end_idx', and 'token_count' keys
+
+### embed()
+**Purpose**: Generate embeddings for text chunks using Cohere
+**Signature**: `embed(texts: List[str]) -> List[List[float]]`
+**Parameters**:
+- `texts` (List[str]): List of text chunks to generate embeddings for
+**Returns**: List of embedding vectors (each vector is a list of floats)
+**Exceptions**: May raise Cohere API exceptions for authentication or rate limiting
+
+### create_collection()
+**Purpose**: Create a Qdrant collection for storing embeddings
+**Signature**: `create_collection(collection_name="book_text_embedding") -> QdrantClient`
+**Parameters**:
+- `collection_name` (string): Name of the collection to create
+**Returns**: Configured QdrantClient instance
+**Exceptions**: May raise QdrantClient exceptions for connection issues
+
+### save_chunk_to_qdrant()
+**Purpose**: Save individual text chunk with embedding to Qdrant
+**Signature**: `save_chunk_to_qdrant(client: QdrantClient, collection_name: str, chunk_content: str, embedding: List[float], metadata: dict = None) -> str`
+**Parameters**:
+- `client` (QdrantClient): Configured Qdrant client instance
+- `collection_name` (str): Name of the collection to save to
+- `chunk_content` (str): The text content of the chunk
+- `embedding` (List[float]): The embedding vector for the chunk
+- `metadata` (dict, optional): Additional metadata to store with the chunk
+**Returns**: The ID of the saved point in Qdrant
+**Exceptions**: May raise QdrantClient exceptions for storage issues
+
+### last_main()
+**Purpose**: Main function to orchestrate the complete pipeline and test retrieval
+**Signature**: `last_main() -> None`
+**Parameters**: None
+**Returns**: None (executes the complete pipeline)
+**Exceptions**: May raise exceptions from any of the component functions

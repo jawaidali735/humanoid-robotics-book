@@ -1,0 +1,365 @@
+openapi: 3.0.3
+info:
+  title: Humanoid Robotics Chat API
+  description: API for integrating the AI agent backend with the Docusaurus frontend
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.humanoid-robotics-book.com
+    description: Production server
+
+paths:
+  /api/chat/query:
+    post:
+      summary: Process a chat query
+      description: Submit a chat query to the AI agent and receive a response with source attribution
+      operationId: processChatQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatQueryRequest'
+      responses:
+        '200':
+          description: Successful response from the AI agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Chat
+
+  /api/chat/context-query:
+    post:
+      summary: Process a query with selected text context
+      description: Submit a query with selected text context to the AI agent
+      operationId: processContextQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectedTextRequest'
+      responses:
+        '200':
+          description: Successful response from the AI agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Chat
+
+  /api/health:
+    get:
+      summary: Health check endpoint
+      description: Check the health status of the backend services
+      operationId: getHealthStatus
+      responses:
+        '200':
+          description: Health status information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Health check failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Health
+
+  /api/rate-limit:
+    get:
+      summary: Rate limit status
+      description: Check current rate limit status for the requesting IP
+      operationId: getRateLimitStatus
+      responses:
+        '200':
+          description: Rate limit status information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitResponse'
+        '500':
+          description: Error retrieving rate limit status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Rate Limit
+
+components:
+  schemas:
+    ChatQueryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The user's chat query
+          minLength: 1
+          maxLength: 1000
+          example: "What is humanoid robotics?"
+        session_id:
+          type: string
+          format: uuid
+          description: Optional session identifier for conversation context
+          nullable: true
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      required:
+        - query
+
+    SelectedTextRequest:
+      type: object
+      properties:
+        selected_text:
+          type: string
+          description: The text selected by the user in the frontend
+          minLength: 1
+          maxLength: 5000
+          example: "Humanoid robotics is a branch of robotics that focuses on creating robots with human-like characteristics."
+        query:
+          type: string
+          description: The user's question about the selected text
+          minLength: 1
+          maxLength: 1000
+          example: "Can you explain the key challenges in this field?"
+        document_context:
+          type: object
+          description: Additional context about where text was selected
+          nullable: true
+          example:
+            page: "introduction-to-humanoid-robotics"
+            section: "definition"
+      required:
+        - selected_text
+        - query
+
+    APIResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful
+          example: true
+        data:
+          type: object
+          properties:
+            response_id:
+              type: string
+              format: uuid
+              description: Unique identifier for the response
+              example: "550e8400-e29b-41d4-a716-446655440001"
+            answer:
+              type: string
+              description: The AI-generated answer
+              example: "Humanoid robotics involves creating robots with human-like characteristics..."
+            sources:
+              type: array
+              description: Source attributions for the response
+              items:
+                $ref: '#/components/schemas/SourceAttribution'
+            confidence_level:
+              type: number
+              description: Confidence level of the response (0-1)
+              minimum: 0
+              maximum: 1
+              example: 0.85
+            timestamp:
+              type: string
+              format: date-time
+              description: When the response was generated
+              example: "2025-12-18T10:30:00Z"
+          required:
+            - response_id
+            - answer
+            - sources
+            - confidence_level
+            - timestamp
+        error:
+          $ref: '#/components/schemas/ErrorResponseObject'
+      required:
+        - success
+        - data
+
+    SourceAttribution:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: ID of the content chunk in Qdrant
+          example: "ch1-intro-001"
+        reference:
+          type: string
+          description: Human-readable reference to the source
+          example: "Chapter 1, Section 1.1 - Introduction to Humanoid Robotics"
+        text:
+          type: string
+          description: Excerpt from the source content
+          example: "Humanoid robotics is a branch of robotics that focuses on creating robots with human-like characteristics..."
+        similarity_score:
+          type: number
+          description: Relevance score of the source (0-1)
+          minimum: 0
+          maximum: 1
+          example: 0.92
+      required:
+        - content_id
+        - reference
+        - text
+        - similarity_score
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful
+          example: false
+        data:
+          type: object
+          description: Empty object for error responses
+          example: {}
+        error:
+          $ref: '#/components/schemas/ErrorResponseObject'
+      required:
+        - success
+        - data
+        - error
+
+    ErrorResponseObject:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: "QUERY_TOO_LONG"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Query must be less than 1000 characters"
+        details:
+          type: object
+          description: Additional error details
+          nullable: true
+          example:
+            field: "query"
+            max_length: 1000
+      required:
+        - code
+        - message
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Overall health status
+          enum: [healthy, unhealthy, degraded]
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the health check was performed
+          example: "2025-12-18T10:30:00Z"
+        services:
+          type: object
+          description: Health status of individual services
+          properties:
+            ai_agent:
+              type: string
+              description: Status of the AI agent service
+              enum: [healthy, unhealthy, degraded]
+              example: "healthy"
+            qdrant:
+              type: string
+              description: Status of the Qdrant service
+              enum: [healthy, unhealthy, degraded]
+              example: "healthy"
+            api:
+              type: string
+              description: Status of the API service
+              enum: [healthy, unhealthy, degraded]
+              example: "healthy"
+          required:
+            - ai_agent
+            - qdrant
+            - api
+      required:
+        - status
+        - timestamp
+        - services
+
+    RateLimitResponse:
+      type: object
+      properties:
+        limit:
+          type: integer
+          description: Maximum number of requests allowed
+          example: 100
+        remaining:
+          type: integer
+          description: Number of requests remaining in the current window
+          example: 95
+        reset_time:
+          type: string
+          format: date-time
+          description: When the rate limit window resets
+          example: "2025-12-18T11:00:00Z"
+      required:
+        - limit
+        - remaining
+        - reset_time

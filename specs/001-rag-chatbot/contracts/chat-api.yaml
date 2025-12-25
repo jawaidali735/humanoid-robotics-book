@@ -1,0 +1,171 @@
+# OpenAPI Contract: RAG Textbook Chatbot Backend
+
+openapi: 3.0.1
+info:
+  title: RAG Textbook Chatbot API
+  description: API for a Retrieval-Augmented Generation chatbot that answers questions about the Physical AI & Humanoid Robotics textbook
+  version: 1.0.0
+servers:
+  - url: http://localhost:7860
+    description: Local development server
+  - url: https://your-hf-space-url.hf.space
+    description: Hugging Face Spaces deployment
+
+paths:
+  /chat:
+    post:
+      summary: Submit a question about the textbook content
+      description: Processes a user question and returns an answer with source citations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQuery'
+      responses:
+        '200':
+          description: Successful response with answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the operational status of the service
+      responses:
+        '200':
+          description: Service is operational
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Service is not operational
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    UserQuery:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+          description: The question about the textbook content
+          example: "What are the key components of a humanoid robot's control system?"
+        user_context:
+          type: object
+          description: Optional user session information
+          example: {}
+
+    ChatResponse:
+      type: object
+      required:
+        - answer
+        - citations
+        - query_id
+        - response_id
+      properties:
+        answer:
+          type: string
+          description: The AI-generated answer to the question
+          example: "The key components of a humanoid robot's control system include..."
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceCitation'
+          description: List of source citations for the answer
+        query_id:
+          type: string
+          description: Unique identifier for the original query
+        response_id:
+          type: string
+          description: Unique identifier for the response
+        confidence_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Confidence score for the response accuracy
+          example: 0.85
+
+    SourceCitation:
+      type: object
+      required:
+        - url
+        - title
+        - snippet
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL of the source textbook page
+          example: "https://jawaidali735.github.io/humanoid-robotics-book/control-systems"
+        title:
+          type: string
+          description: Title of the source page
+          example: "Control Systems for Humanoid Robots"
+        snippet:
+          type: string
+          description: Relevant text snippet from the source
+          example: "The control system consists of multiple feedback loops..."
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall health status of the service
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the health check was performed
+          example: "2025-12-19T10:00:00Z"
+        details:
+          type: object
+          description: Additional health details for various components
+          example: {"qdrant": "connected", "gemini_api": "available", "ingestion_pipeline": "ready"}
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - timestamp
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "internal_error"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "An internal error occurred while processing the request"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: "2025-12-19T10:00:00Z"

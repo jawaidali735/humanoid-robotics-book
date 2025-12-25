@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: BetterAuth Authentication API
+  version: 1.0.0
+  description: API for user authentication including registration, login, and session management
+
+paths:
+  /api/auth/sign-up:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                password:
+                  type: string
+                  minLength: 8
+                  description: User's password (minimum 8 characters)
+                name:
+                  type: string
+                  description: User's display name
+                image:
+                  type: string
+                  format: uri
+                  description: Optional profile image URL
+      responses:
+        '200':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      session:
+                        $ref: '#/components/schemas/Session'
+                  error:
+                    type: object
+                    nullable: true
+        '400':
+          description: Invalid input or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/auth/sign-in:
+    post:
+      summary: Authenticate a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                callbackURL:
+                  type: string
+                  description: URL to redirect after successful authentication
+                rememberMe:
+                  type: boolean
+                  default: true
+                  description: Whether to remember the session after browser closes
+      responses:
+        '200':
+          description: User successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      session:
+                        $ref: '#/components/schemas/Session'
+                  error:
+                    type: object
+                    nullable: true
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/auth/sign-out:
+    post:
+      summary: Sign out the current user
+      responses:
+        '200':
+          description: Successfully signed out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                  error:
+                    type: object
+                    nullable: true
+
+  /api/auth/session:
+    get:
+      summary: Get current user session
+      responses:
+        '200':
+          description: Current session data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Session'
+                  error:
+                    type: object
+                    nullable: true
+
+  /api/auth/sign-in/github:
+    post:
+      summary: Initiate GitHub social authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackURL:
+                  type: string
+                  description: URL to redirect after successful authentication
+                errorCallbackURL:
+                  type: string
+                  description: URL to redirect if error occurs
+                newUserCallbackURL:
+                  type: string
+                  description: URL to redirect for new users
+                disableRedirect:
+                  type: boolean
+                  default: false
+                  description: Disable automatic redirect to provider
+      responses:
+        '200':
+          description: GitHub authentication initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      redirect:
+                        type: string
+                        description: URL to redirect user to GitHub for authentication
+                  error:
+                    type: object
+                    nullable: true
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+          description: User's email address
+        email_verified:
+          type: boolean
+          description: Whether email is verified
+        name:
+          type: string
+          description: User's display name
+        image:
+          type: string
+          format: uri
+          description: URL to user's profile image
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+
+    Session:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accessToken:
+          type: string
+          description: Access token for the session
+        refreshToken:
+          type: string
+          description: Refresh token for the session
+        expiresAt:
+          type: string
+          format: date-time
+          description: Session expiration timestamp
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code

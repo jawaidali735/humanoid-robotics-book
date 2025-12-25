@@ -1,0 +1,130 @@
+# API Contract: RAG Agent Service
+
+## Overview
+This document specifies the API contract for the Retrieval-Augmented Generation (RAG) Agent service that connects to Qdrant to answer questions based on embedded book content.
+
+## Base URL
+```
+https://api.yourdomain.com/v1
+```
+
+## Authentication
+All endpoints require a Bearer token in the Authorization header:
+```
+Authorization: Bearer {API_KEY}
+```
+
+## Endpoints
+
+### POST /query
+Submit a natural language question to retrieve information from the book content.
+
+#### Request
+```json
+{
+  "query": "What are the key principles of humanoid robotics?",
+  "user_context": {
+    "session_id": "optional-session-id",
+    "user_preferences": {}
+  }
+}
+```
+
+**Request Parameters**:
+- `query` (string, required): The natural language question to ask
+- `user_context` (object, optional): Additional context about the user or session
+
+#### Response
+```json
+{
+  "response_id": "unique-response-id",
+  "query": "What are the key principles of humanoid robotics?",
+  "answer": "The key principles of humanoid robotics include...",
+  "sources": [
+    {
+      "content_id": "content-unique-id",
+      "text": "Original content text...",
+      "reference": "Chapter 3, Section 2.1",
+      "similarity_score": 0.85
+    }
+  ],
+  "confidence_level": 0.92,
+  "timestamp": "2025-12-17T10:30:00Z"
+}
+```
+
+**Response Parameters**:
+- `response_id` (string): Unique identifier for this response
+- `query` (string): The original query submitted
+- `answer` (string): The AI-generated answer based on retrieved content
+- `sources` (array): List of sources used to generate the answer
+  - `content_id` (string): Unique identifier for the content chunk
+  - `text` (string): The original content text used
+  - `reference` (string): Reference to the original book section
+  - `similarity_score` (number): Similarity score between 0 and 1
+- `confidence_level` (number): Confidence level of the response between 0 and 1
+- `timestamp` (string): ISO 8601 timestamp of the response
+
+#### Error Responses
+
+**400 Bad Request**
+```json
+{
+  "error": "Invalid query format",
+  "message": "Query must be a non-empty string less than 1000 characters"
+}
+```
+
+**401 Unauthorized**
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or missing API key"
+}
+```
+
+**503 Service Unavailable**
+```json
+{
+  "error": "Service unavailable",
+  "message": "Unable to connect to external services (OpenAI or Qdrant)"
+}
+```
+
+### GET /health
+Check the health status of the RAG service.
+
+#### Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-12-17T10:30:00Z",
+  "dependencies": {
+    "openai": "connected",
+    "qdrant": "connected"
+  }
+}
+```
+
+## Data Types
+
+### Query Object
+- `query` (string, 1-1000 characters): The natural language question
+- `user_context` (object, optional): Additional context about the user
+
+### Source Object
+- `content_id` (string): Unique identifier for the content chunk
+- `text` (string): The original content text used in the response
+- `reference` (string): Reference to the original book section
+- `similarity_score` (number, 0-1): Similarity score between query and content
+
+## Rate Limits
+- Queries: 100 requests per minute per API key
+- Burst: Up to 10 requests allowed in a single burst
+
+## Error Codes
+- `400`: Bad Request - Invalid input parameters
+- `401`: Unauthorized - Invalid or missing API key
+- `429`: Too Many Requests - Rate limit exceeded
+- `500`: Internal Server Error - Unexpected server error
+- `503`: Service Unavailable - External service connection failure

@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Text Embedding & Retrieval API
+  description: API for ingesting text content and performing semantic search
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /ingest:
+    post:
+      summary: Ingest content from URLs
+      description: Extract text from provided URLs, chunk, embed, and store in vector database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  description: List of URLs to process
+                chunk_size:
+                  type: integer
+                  default: 1000
+                  description: Size of text chunks in characters
+                chunk_overlap:
+                  type: integer
+                  default: 200
+                  description: Overlap between chunks in characters
+              required:
+                - urls
+      responses:
+        '200':
+          description: Ingestion completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    description: ID of the ingestion job
+                  status:
+                    type: string
+                    enum: [completed, failed]
+                  processed_count:
+                    type: integer
+                    description: Number of chunks successfully processed
+                  failed_count:
+                    type: integer
+                    description: Number of chunks that failed to process
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error during ingestion
+
+  /search:
+    post:
+      summary: Semantic search
+      description: Search for relevant content using semantic similarity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Search query string
+                top_k:
+                  type: integer
+                  default: 5
+                  description: Number of top results to return
+                filters:
+                  type: object
+                  properties:
+                    source_url:
+                      type: string
+                      description: Filter results by source URL
+              required:
+                - query
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: Original query string
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chunk_id:
+                          type: string
+                          description: ID of the text chunk
+                        content:
+                          type: string
+                          description: Content of the text chunk
+                        source_url:
+                          type: string
+                          description: URL where the chunk was found
+                        score:
+                          type: number
+                          format: float
+                          description: Similarity score between 0 and 1
+                  total_results:
+                    type: integer
+                    description: Total number of results found
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error during search
+
+  /collections/{collection_name}:
+    get:
+      summary: Get collection info
+      description: Get information about a Qdrant collection
+      parameters:
+        - name: collection_name
+          in: path
+          required: true
+          schema:
+            type: string
+            default: humanoid_robotics_book
+      responses:
+        '200':
+          description: Collection information retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection_name:
+                    type: string
+                  vector_size:
+                    type: integer
+                  total_points:
+                    type: integer
+                  status:
+                    type: string
+        '404':
+          description: Collection not found
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    TextChunk:
+      type: object
+      properties:
+        chunk_id:
+          type: string
+          description: Unique identifier for the chunk
+        content:
+          type: string
+          description: Text content of the chunk
+        source_url:
+          type: string
+          format: uri
+          description: URL where the text was extracted from
+        position:
+          type: integer
+          description: Position of chunk in original document
+        embedding:
+          type: array
+          items:
+            type: number
+            format: float
+          description: 1024-dimensional embedding vector
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when chunk was processed

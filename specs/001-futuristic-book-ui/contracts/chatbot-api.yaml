@@ -1,0 +1,106 @@
+# Chatbot API Contract
+
+## Overview
+API contract for the floating chatbot widget integration with the book website.
+
+## Base URL
+`/api/chat`
+
+## Endpoints
+
+### POST /query
+Process a chat query and return AI-generated response.
+
+#### Request
+```json
+{
+  "query": "string (1-1000 characters)",
+  "session_id": "string (optional)",
+  "context": {
+    "chapter": "string (optional)",
+    "section": "string (optional)",
+    "selected_text": "string (optional)"
+  }
+}
+```
+
+#### Response
+```json
+{
+  "success": "boolean",
+  "data": {
+    "response_id": "string",
+    "answer": "string",
+    "sources": [
+      {
+        "content_id": "string",
+        "reference": "string",
+        "text": "string",
+        "similarity_score": "number (0.0-1.0)"
+      }
+    ],
+    "confidence_level": "number (0.0-1.0)",
+    "timestamp": "string (ISO 8601)"
+  },
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": "object (optional)"
+  }
+}
+```
+
+#### Error Codes
+- `INPUT_TOO_LONG`: Query exceeds maximum length
+- `INVALID_CONTEXT`: Context parameters are malformed
+- `AGENT_ERROR`: Chatbot service error
+- `RATE_LIMIT_EXCEEDED`: Rate limit reached
+
+### POST /context-query
+Process a query with selected text context.
+
+#### Request
+```json
+{
+  "selected_text": "string (1-5000 characters)",
+  "query": "string (1-1000 characters)",
+  "document_context": {
+    "title": "string (optional)",
+    "section": "string (optional)",
+    "page": "string (optional)"
+  }
+}
+```
+
+#### Response
+Same as POST /query
+
+### GET /health
+Check chatbot service health.
+
+#### Response
+```json
+{
+  "status": "string (healthy|degraded|unhealthy)",
+  "timestamp": "string (ISO 8601)",
+  "services": {
+    "ai_agent": "string (healthy|unhealthy)",
+    "api": "string (healthy|unhealthy)"
+  }
+}
+```
+
+## Rate Limiting
+- 100 requests per hour per IP address
+- Rate limit information available in response headers
+
+## Authentication
+No authentication required for frontend integration.
+
+## Error Handling
+All error responses follow the same structure as successful responses with success=false and error object populated.
+
+## Validation
+- Query: 1-1000 characters
+- Selected text: 1-5000 characters
+- Session ID: Valid UUID format if provided
