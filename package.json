@@ -1,5 +1,10 @@
 {
   "type": "module",
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "docusaurus": "cd frontend && npx docusaurus"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "better-auth": "^1.4.9",
