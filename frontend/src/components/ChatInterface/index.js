@@ -5,7 +5,7 @@ import './ChatInterface.css';
  * ChatInterface component for humanoid robotics Q&A
  * Provides a chat interface that connects to the FastAPI backend
  */
-const ChatInterface = ({ apiEndpoint = process.env.REACT_APP_CHATBOT_API_ENDPOINT || 'http://localhost:8007' }) => {
+const ChatInterface = ({ apiEndpoint = (typeof document !== 'undefined' && document.querySelector('meta[name="chatbot-api-endpoint"]')?.content) || 'http://localhost:8007' }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);

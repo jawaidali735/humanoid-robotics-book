@@ -70,6 +70,10 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Pass environment variables to client via HTML head
+      metadata: [
+        {name: 'chatbot-api-endpoint', content: process.env.REACT_APP_CHATBOT_API_ENDPOINT || 'http://localhost:8007'},
+      ],
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
@@ -159,6 +163,7 @@ const config = {
     themes: [
       // Add any theme plugins here if needed
     ],
+
 };
 
 export default config;
