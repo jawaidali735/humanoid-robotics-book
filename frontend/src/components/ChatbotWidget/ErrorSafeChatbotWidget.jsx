@@ -10,7 +10,7 @@ import './ChatbotWidget.css';
 const ErrorSafeChatbotWidget = ({
   title = "AI Assistant",
   quickActions = [],
-  apiEndpoint = typeof window !== 'undefined' ? (window.ENV?.CHATBOT_API_ENDPOINT || "http://localhost:8007") : "http://localhost:8007"
+  apiEndpoint = process.env.REACT_APP_CHATBOT_API_ENDPOINT || "http://localhost:8007"
 }) => {
   // Simplified state management without authentication dependency
   const [isOpen, setIsOpen] = useState(false);

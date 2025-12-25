@@ -41,6 +41,8 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5003",
         "http://localhost:4000",  # Additional possible ports
         "http://127.0.0.1:4000",
+        "https://javedali735-physical-ai-and-humanoid-robotics.hf.space",  # Hugging Face Space
+        "https://*.hf.space",  # Allow any Hugging Face Space subdomain
     ]
 
     # Rate Limiting Configuration
