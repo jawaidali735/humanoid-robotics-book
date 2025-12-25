@@ -1,0 +1,235 @@
+# API Contract: Authentication Endpoints
+
+**Feature**: Auth-Gated Docs & Chatbot
+**Contract Version**: 1.0.0
+**Created**: 2025-12-23
+
+## Overview
+This document specifies the API contracts for the authentication system in the Auth-Gated Docs & Chatbot feature.
+
+## Base URL
+```
+http://localhost:8000/api/auth
+```
+
+## Authentication
+- Session-based authentication using HttpOnly cookies
+- Better Auth manages session creation and validation
+
+## Common Headers
+- `Content-Type: application/json` for requests with body
+- `Accept: application/json` for JSON responses
+
+## Endpoints
+
+### POST /register
+Register a new user account.
+
+#### Request
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123",
+  "name": "John Doe"
+}
+```
+
+#### Request Validation
+- email: Required, valid email format, max 255 characters
+- password: Required, minimum 8 characters
+- name: Optional, max 255 characters
+
+#### Responses
+- `201 Created`: User successfully registered
+```json
+{
+  "success": true,
+  "user": {
+    "id": "uuid-string",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "role": "user",
+    "createdAt": "2023-01-01T00:00:00Z"
+  }
+}
+```
+
+- `400 Bad Request`: Validation error
+```json
+{
+  "error": "Invalid input",
+  "details": {
+    "email": "Email is required",
+    "password": "Password must be at least 8 characters"
+  }
+}
+```
+
+- `409 Conflict`: Email already exists
+```json
+{
+  "error": "Email already registered"
+}
+```
+
+### POST /login
+Authenticate user and create session.
+
+#### Request
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+```
+
+#### Request Validation
+- email: Required, valid email format
+- password: Required
+
+#### Responses
+- `200 OK`: Login successful
+```json
+{
+  "success": true,
+  "user": {
+    "id": "uuid-string",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "role": "user"
+  }
+}
+```
+
+- `400 Bad Request`: Missing fields
+```json
+{
+  "error": "Email and password are required"
+}
+```
+
+- `401 Unauthorized`: Invalid credentials
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+### POST /logout
+End current user session.
+
+#### Request
+No request body required.
+
+#### Responses
+- `200 OK`: Logout successful
+```json
+{
+  "success": true,
+  "message": "Logged out successfully"
+}
+```
+
+### GET /session
+Get current session information.
+
+#### Responses
+- `200 OK`: Session exists
+```json
+{
+  "user": {
+    "id": "uuid-string",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "role": "user"
+  },
+  "authenticated": true
+}
+```
+
+- `200 OK`: No active session
+```json
+{
+  "authenticated": false
+}
+```
+
+### POST /content-access
+Check if user has access to specific content.
+
+#### Request
+```json
+{
+  "contentPath": "/docs/chapter-1/introduction"
+}
+```
+
+#### Request Validation
+- contentPath: Required, string representing content path
+
+#### Responses
+- `200 OK`: Access granted
+```json
+{
+  "access": true,
+  "contentPath": "/docs/chapter-1/introduction"
+}
+```
+
+- `200 OK`: Access denied
+```json
+{
+  "access": false,
+  "contentPath": "/docs/chapter-1/introduction",
+  "message": "Authentication required"
+}
+```
+
+- `400 Bad Request`: Invalid content path
+```json
+{
+  "error": "Invalid content path"
+}
+```
+
+### POST /chat-access
+Validate user access for chatbot functionality.
+
+#### Request
+No request body required.
+
+#### Responses
+- `200 OK`: Chat access granted
+```json
+{
+  "access": true,
+  "userId": "uuid-string"
+}
+```
+
+- `200 OK`: Chat access denied
+```json
+{
+  "access": false,
+  "message": "Authentication required for chatbot access"
+}
+```
+
+## Error Response Format
+All error responses follow this format:
+```json
+{
+  "error": "Error message",
+  "code": "ERROR_CODE" // Optional
+}
+```
+
+## Security Considerations
+- Passwords must never be logged
+- Session tokens handled via HttpOnly cookies
+- Rate limiting should be implemented for authentication endpoints
+- Input validation required for all endpoints
+
+## Rate Limits
+- Login attempts: 5 attempts per 15 minutes per IP
+- Registration: 1 registration per 5 minutes per IP

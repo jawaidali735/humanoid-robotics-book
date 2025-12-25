@@ -1,16 +1,36 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir \"history\\prompts\" /s)",
-      "Bash(mkdir -p docs src static)",
-      "Bash(npm install)",
-      "Bash(npx kill-port 3000)",
+      "Bash(npm run build)",
+      "Bash(npx docusaurus build)",
       "Bash(npm start)",
-      "Bash(npx docusaurus start --port 3002)",
-      "Bash(npx docusaurus start --port 3003)",
-      "Bash(npx docusaurus start --port 3004)",
-      "Bash(npx docusaurus start --port 3005)",
-      "Bash(npx docusaurus start --port 3006)"
+      "Bash(npx drizzle-kit push)",
+      "Bash(npx tsx auth-server.js)",
+      "Bash(npx nodemon --exec \"npx tsx\" auth-server.js)",
+      "Bash(npx sqlite3 sqlite.db \".tables\")",
+      "Bash(node -p \"require\\(''better-sqlite3''\\)\\(''./sqlite.db''\\).prepare\\(''SELECT name FROM sqlite_master WHERE type=\"\"table\"\";''\\).all\\(\\)\")",
+      "Bash(cat frontend/src/lib/auth.ts)",
+      "Bash(npm install)",
+      "Bash(node auth/auth-server.js)",
+      "Bash(npx kill-port 4000)",
+      "Bash(npm install express cors express-session passport passport-google-oauth20 @neondatabase/serverless drizzle-orm dotenv)",
+      "Bash(node auth-server-port4000.js)",
+      "Bash(node verify-table.js)",
+      "Bash(python -c \"from api_integration.main import app; print\\(''Backend app created successfully''\\)\")",
+      "Bash(python -m uvicorn api_integration.main:app --host 0.0.0.0 --port 8007)",
+      "Bash(curl -s http://localhost:8007/api/chat/health)",
+      "Bash(git commit -m \"fix: update build script to run npm run build from frontend directory\n\n- Use ''cd frontend && npm run build'' to execute the script from frontend package.json\n- This properly executes the docusaurus build command via the defined script\n- Fixes the ''could not determine executable to run'' error\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git push origin main)",
+      "Bash(git add .github/workflows/github-pages.yml)",
+      "Bash(git commit -m \"fix: update GitHub Actions workflow to use correct build path\n\n- Change artifact path from ''build'' to ''frontend/build''\n- This matches where Docusaurus outputs the built files\n- Fixes GitHub Pages deployment issue\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git commit -m \"fix: install frontend dependencies in GitHub Actions workflow\n\n- Add step to install dependencies in frontend directory\n- This ensures Docusaurus CLI is available when building\n- Fixes ''docusaurus: not found'' error in GitHub Actions\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git commit -m \"feat: add Docker configuration for backend deployment\n\n- Add Dockerfile for backend containerization\n- Add docker-compose files for easy deployment\n- Add deployment instructions for various platforms\n- Enable production-ready backend deployment\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8007)",
+      "Bash(tasklist)",
+      "Bash(findstr 19280)",
+      "Bash(powershell \"Stop-Process -Id 19280 -Force\")",
+      "Bash(npx docusaurus start --port 5000)"
     ]
   }
 }

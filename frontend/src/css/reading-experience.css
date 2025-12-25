@@ -1,0 +1,231 @@
+/**
+ * Reading experience styles for the Futuristic Book Website UI
+ */
+
+/* Optimal reading width */
+.reading-container {
+  max-width: 65ch; /* Optimal for reading: 65-75 characters per line */
+  margin: 0 auto;
+  padding: var(--spacing-4);
+}
+
+/* Typography for reading */
+.reading-content {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.reading-content h1,
+.reading-content h2,
+.reading-content h3,
+.reading-content h4,
+.reading-content h5,
+.reading-content h6 {
+  color: var(--color-text-primary);
+  margin-top: var(--spacing-8);
+  margin-bottom: var(--spacing-4);
+  line-height: var(--line-height-tight);
+}
+
+.reading-content h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.reading-content h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-2);
+}
+
+.reading-content h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.reading-content p {
+  margin-bottom: var(--spacing-4);
+  margin-top: var(--spacing-2);
+}
+
+.reading-content ul,
+.reading-content ol {
+  margin: var(--spacing-4) 0;
+  padding-left: var(--spacing-6);
+}
+
+.reading-content li {
+  margin-bottom: var(--spacing-2);
+}
+
+.reading-content blockquote {
+  border-left: 3px solid var(--color-accent-primary);
+  padding-left: var(--spacing-4);
+  margin: var(--spacing-4) 0;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.reading-content code {
+  background: var(--color-surface-elevation);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent-primary);
+}
+
+.reading-content pre {
+  background: var(--color-surface-elevation);
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius-lg);
+  overflow-x: auto;
+  margin: var(--spacing-4) 0;
+}
+
+.reading-content pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Table of Contents for reading */
+.reading-toc {
+  position: sticky;
+  top: var(--spacing-4);
+  align-self: flex-start;
+  max-height: calc(100vh - var(--spacing-8));
+  overflow-y: auto;
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.reading-toc h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+.reading-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reading-toc li {
+  margin: var(--spacing-1) 0;
+}
+
+.reading-toc a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reading-toc a:hover {
+  background: var(--color-surface-elevation);
+  color: var(--color-text-primary);
+}
+
+.reading-toc a--active {
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--color-accent-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Reading progress indicator */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-surface-elevation);
+  z-index: var(--z-fixed);
+}
+
+.reading-progress-bar {
+  height: 100%;
+  background: var(--color-accent-primary);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* Reading focus mode */
+.reading-focus-mode {
+  filter: brightness(1.1) contrast(1.1);
+}
+
+.reading-focus-mode .reading-content > *:not(.active-section) {
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+/* Typography adjustments for better readability */
+.reading-content {
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.reading-content h1,
+.reading-content h2,
+.reading-content h3,
+.reading-content h4 {
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  text-wrap: balance;
+}
+
+/* Responsive adjustments for reading */
+@media (max-width: 767px) {
+  .reading-container {
+    padding: var(--spacing-2);
+  }
+
+  .reading-content {
+    font-size: var(--font-size-base);
+  }
+
+  .reading-toc {
+    position: static;
+    max-height: none;
+    margin-bottom: var(--spacing-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .reading-toc-container {
+    display: block;
+    position: sticky;
+    top: var(--spacing-4);
+    align-self: flex-start;
+    max-height: calc(100vh - var(--spacing-8));
+    overflow-y: auto;
+  }
+}
+
+/* High contrast mode for reading */
+@media (prefers-contrast: high) {
+  .reading-content {
+    color: ButtonText;
+  }
+
+  .reading-content h1,
+  .reading-content h2,
+  .reading-content h3 {
+    border-color: ButtonText;
+  }
+
+  .reading-content code {
+    border: 1px solid ButtonText;
+  }
+}
