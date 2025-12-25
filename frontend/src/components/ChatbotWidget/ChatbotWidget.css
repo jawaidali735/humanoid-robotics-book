@@ -145,7 +145,7 @@
 }
 
 .chatbot-message--user .chatbot-message-content {
-  background: #3b61f6;
+  background: linear-gradient(135deg, #1a202c, #2d3748);
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -184,7 +184,7 @@
 .chatbot-typing-indicator span {
   width: 0.5rem;
   height: 0.5rem;
-  background: #3b61f6;
+  background: #1a202c;
   border-radius: 50%;
   display: inline-block;
   animation: typing 1.4s infinite ease-in-out;
@@ -243,11 +243,15 @@
 }
 
 .chatbot-input-container {
-  display: flex;
   padding: 1rem;
   border-top: 1px solid #e5e7eb;
   background: white;
+}
+
+.chatbot-input-controls {
+  display: flex;
   gap: 0.5rem;
+  align-items: flex-end; /* Align items to the bottom */
 }
 
 .chatbot-input {
@@ -263,6 +267,7 @@
   font-family: inherit;
   font-size: 0.9rem;
   outline: none;
+  margin: 0; /* Remove any default margin */
 }
 
 .chatbot-input:focus {
@@ -272,7 +277,7 @@
 }
 
 .chatbot-send-button {
-  background: linear-gradient(135deg, #3b61f6, #8aa2ff);
+  background: linear-gradient(135deg, #1a202c, #2d3748);
   border: none;
   color: white;
   width: 40px;
@@ -283,10 +288,13 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  align-self: flex-end; /* Align button to the bottom of the container */
+  margin-bottom: 2px; /* Small adjustment to align with input */
 }
 
 .chatbot-send-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5072f8, #2e57fa);
+  background: linear-gradient(135deg, #2d3748, #1a202c);
   transform: scale(1.05);
 }
 

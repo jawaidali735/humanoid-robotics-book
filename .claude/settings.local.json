@@ -29,7 +29,8 @@
       "Bash(findstr :8007)",
       "Bash(tasklist)",
       "Bash(findstr 19280)",
-      "Bash(powershell \"Stop-Process -Id 19280 -Force\")"
+      "Bash(powershell \"Stop-Process -Id 19280 -Force\")",
+      "Bash(npx docusaurus start --port 5000)"
     ]
   }
 }

@@ -86,12 +86,6 @@
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
 }
 
-.navbar {
-  box-shadow: var(--ifm-navbar-shadow);
-  background-color: var(--ifm-navbar-background-color);
-  transition: all 0.3s ease;
-  border-bottom: 1px solid #e2e8f0;
-}
 
 .navbar__logo {
   transition: transform 0.3s ease;
@@ -100,6 +94,7 @@
 .navbar__logo:hover {
   transform: scale(1.05);
 }
+
 
 .pagination-nav__link {
   border: 1px solid #e2e8f0;
@@ -672,3 +667,9 @@ html {
   font-weight: 400;
 }
 
+
+/* Make navbar scroll with page instead of being sticky */
+.navbar {
+  position: relative !important;
+  top: auto !important;
+}

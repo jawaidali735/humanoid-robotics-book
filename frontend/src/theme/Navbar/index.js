@@ -5,15 +5,14 @@ import Link from '@docusaurus/Link';
 // Navbar with static login/register links (no auth state management)
 export default function NavbarWrapper(props) {
   return (
-    <div style={{ position: 'relative' }}>
+    <>
       <OriginalNavbar {...props} />
       <div
         style={{
-          position: 'absolute',
+          position: 'fixed',
           right: '10rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 1000,
+          top: '1rem', // Adjusted position to be relative to viewport instead of navbar height
+          zIndex: 1001, // Higher than navbar
           display: 'flex',
           alignItems: 'center'
         }}
@@ -36,6 +35,6 @@ export default function NavbarWrapper(props) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

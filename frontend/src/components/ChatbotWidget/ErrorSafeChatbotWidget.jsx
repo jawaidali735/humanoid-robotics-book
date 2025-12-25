@@ -223,9 +223,9 @@ const ErrorSafeChatbotWidget = ({
   const quickActionButtons = quickActions.length > 0
     ? quickActions
     : [
-        { id: 'explain', label: 'Explain this section', icon: '🔍' },
-        { id: 'summarize', label: 'Summarize chapter', icon: '📝' },
-        { id: 'related', label: 'Go to related topic', icon: '🔗' }
+        { id: 'explain', label: 'Explain ROS 2 concepts', icon: '🤖' },
+        { id: 'summarize', label: 'Summarize AI integration', icon: '🧠' },
+        { id: 'related', label: 'Humanoid robotics Q&A', icon: '🦾' }
       ];
 
   return (
